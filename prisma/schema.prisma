@@ -13,32 +13,40 @@ datasource db {
 model User {
   id String @id @default(uuid())
   createdAt DateTime @default(now())
-  name String
   email String @unique
-  password String
+  password String @db.VarChar(255)
+  projects Project[]
 }
 
 model Project {
   id String @id @default(uuid())
   createdAt DateTime @default(now())
-  name String
-  user String
+  name String @db.VarChar(255)
+  songs Song[]
+
+  userId String @db.VarChar(255)
+  belongsTo User @relation(fields: [userId], references: [id])
 }
 
 model Song {
     id String @id @default(cuid())
     createdAt DateTime @default(now())
-    project String
-    name String
-    url String
-    version Int
+    name String @db.VarChar(255)
+    url String @db.VarChar(255)
+    version Int @default(1)
+    notes Note[]
+
+    projectId String @db.VarChar(255)
+    belongsTo Project @relation(fields: [projectId], references: [id])
 }
 
 model Note {
     id String @id @default(cuid())
     createdAt DateTime @default(now())
     updatedAt DateTime @updatedAt
-    song String 
-    value String 
-    checked Boolean
+    value String @db.VarChar(255)
+    checked Boolean @default(false)
+    
+    songId String @db.VarChar(255)
+    belongsTo Song @relation(fields: [songId], references: [id])
 }
