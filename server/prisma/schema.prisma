@@ -14,7 +14,7 @@ model User {
   id String @id @default(uuid())
   createdAt DateTime @default(now())
   email String @unique
-  password String @db.VarChar(255)
+  password String @db.VarChar(255)  
   projects Project[]
 }
 
@@ -29,24 +29,24 @@ model Project {
 }
 
 model Song {
-    id String @id @default(cuid())
-    createdAt DateTime @default(now())
-    name String @db.VarChar(255)
-    url String @db.VarChar(255)
-    version Int @default(1)
-    notes Note[]
+  id String @id @default(cuid())
+  createdAt DateTime @default(now())
+  name String @db.VarChar(255)
+  url String @db.VarChar(255)
+  version Int @default(1)
+  notes Note[]
 
-    projectId String @db.VarChar(255)
-    belongsTo Project @relation(fields: [projectId], references: [id])
+  projectId String @db.VarChar(255)
+  belongsTo Project @relation(fields: [projectId], references: [id])
 }
 
 model Note {
-    id String @id @default(cuid())
-    createdAt DateTime @default(now())
-    updatedAt DateTime @updatedAt
-    value String @db.VarChar(255)
-    checked Boolean @default(false)
-    
-    songId String @db.VarChar(255)
-    belongsTo Song @relation(fields: [songId], references: [id])
+  id String @id @default(cuid())
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  value String @db.VarChar(255)
+  checked Boolean @default(false)
+
+  songId String @db.VarChar(255)
+  belongsTo Song @relation(fields: [songId], references: [id])
 }
