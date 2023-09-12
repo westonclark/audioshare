@@ -15,17 +15,28 @@ model User {
   createdAt DateTime @default(now())
   email String @unique
   password String @db.VarChar(255)  
-  projects Project[]
+  artists Artist[]
 }
 
-model Project {
+model Artist {
+  id String @id @default(uuid())
+  createdAt DateTime @default(now())
+  name String @db.VarChar(255)
+  albums Album[]
+
+  userId String @db.VarChar(255)
+  belongsTo User @relation(fields: [userId], references: [id])
+}
+
+
+model Album {
   id String @id @default(uuid())
   createdAt DateTime @default(now())
   name String @db.VarChar(255)
   songs Song[]
 
-  userId String @db.VarChar(255)
-  belongsTo User @relation(fields: [userId], references: [id])
+  artistId String @db.VarChar(255)
+  belongsTo Artist @relation(fields: [artistId], references: [id])
 }
 
 model Song {
@@ -36,8 +47,8 @@ model Song {
   version Int @default(1)
   notes Note[]
 
-  projectId String @db.VarChar(255)
-  belongsTo Project @relation(fields: [projectId], references: [id])
+  albumId String @db.VarChar(255)
+  belongsTo Album @relation(fields: [albumId], references: [id])
 }
 
 model Note {
