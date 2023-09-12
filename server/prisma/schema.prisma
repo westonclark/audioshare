@@ -13,6 +13,7 @@ datasource db {
 model User {
   id String @id @default(uuid())
   createdAt DateTime @default(now())
+  name String @db.VarChar(255)
   email String @unique
   password String @db.VarChar(255)  
   artists Artist[]

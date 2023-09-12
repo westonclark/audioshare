@@ -11,12 +11,19 @@ apiRouter.put('/user/:id', () => {});
 apiRouter.post('/user', () => {});
 apiRouter.delete('/user/:id', () => {});
 
-// Projects
-apiRouter.get('/project', () => {});
-apiRouter.get('/project/:id', () => {});
-apiRouter.put('/project/:id', () => {});
-apiRouter.post('/project', () => {});
-apiRouter.delete('/project/:id', () => {});
+// Artist
+apiRouter.get('/artist', () => {});
+apiRouter.get('/artist/:id', () => {});
+apiRouter.put('/artist/:id', () => {});
+apiRouter.post('/artist', () => {});
+apiRouter.delete('/artist/:id', () => {});
+
+// Albums
+apiRouter.get('/al;bum', () => {});
+apiRouter.get('/al;bum/:id', () => {});
+apiRouter.put('/al;bum/:id', () => {});
+apiRouter.post('/al;bum', () => {});
+apiRouter.delete('/al;bum/:id', () => {});
 
 // Songs
 apiRouter.get('/song', () => {});
