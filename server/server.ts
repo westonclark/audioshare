@@ -1,5 +1,5 @@
 import express, { Express, Request, Response, NextFunction, ErrorRequestHandler, Router } from 'express';
-import { checkAuth } from './modules/auth';
+import { checkJWT } from './modules/auth';
 import apiRouter from './routers/apiRouter';
 import cookieParser from 'cookie-parser';
 import cors from 'cors';
@@ -19,7 +19,7 @@ app.get('/', (req: Request, res: Response) => {
 });
 
 // API Router
-app.use('/api', checkAuth, apiRouter);
+app.use('/api', checkJWT, apiRouter);
 
 // Global Error Handling
 app.use((err: ErrorRequestHandler, req: Request, res: Response, next: NextFunction) => {
