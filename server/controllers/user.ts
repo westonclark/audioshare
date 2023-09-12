@@ -11,9 +11,8 @@ export const createNewUser = async (req: Request, res: Response) => {
     },
   });
 
-  const token = createJWT(user.id);
-  req.cookies.bearer = token;
-  res.json({ token });
+  req.cookies.bearer = createJWT(user.id);
+  res.json({ message: 'success' });
 };
 
 export const signIn = async (req: Request, res: Response) => {
@@ -29,4 +28,7 @@ export const signIn = async (req: Request, res: Response) => {
     res.status(401);
     res.json({ message: 'Incorect Password' });
   }
+
+  req.cookies.bearer = createJWT(user!.id);
+  res.json({ message: 'success' });
 };

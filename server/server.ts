@@ -4,6 +4,8 @@ import apiRouter from './routers/apiRouter';
 import cookieParser from 'cookie-parser';
 import cors from 'cors';
 
+import { createNewUser, signIn } from './controllers/user';
+
 // Create server
 const app: Express = express();
 
@@ -20,6 +22,10 @@ app.get('/', (req: Request, res: Response) => {
 
 // API Router
 app.use('/api', checkJWT, apiRouter);
+
+// Signup and Login
+app.post('/signup', createNewUser);
+app.post('/signin', signIn);
 
 // Global Error Handling
 app.use((err: ErrorRequestHandler, req: Request, res: Response, next: NextFunction) => {

@@ -1,20 +1,19 @@
 import { Router, Request, Response } from 'express';
+import { body, validationResult } from 'express-validator';
 
 const apiRouter = Router();
-
-// Users
-apiRouter.get('/user', (req: Request, res: Response) => {
-  res.json('hello from api/user');
-});
-apiRouter.get('/user/:id', () => {});
-apiRouter.put('/user/:id', () => {});
-apiRouter.post('/user', () => {});
-apiRouter.delete('/user/:id', () => {});
 
 // Artist
 apiRouter.get('/artist', () => {});
 apiRouter.get('/artist/:id', () => {});
-apiRouter.put('/artist/:id', () => {});
+apiRouter.put('/artist/:id', body('name').isString(), (req: Request, res: Response) => {
+  const errors = validationResult(req);
+
+  if (!errors.isEmpty()) {
+    res.status(400);
+    res.json({ errors: errors.array() });
+  }
+});
 apiRouter.post('/artist', () => {});
 apiRouter.delete('/artist/:id', () => {});
 
