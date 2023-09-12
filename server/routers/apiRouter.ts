@@ -1,28 +1,43 @@
 import { Router, Request, Response } from 'express';
-import { body, validationResult } from 'express-validator';
+import { body } from 'express-validator';
+import prisma from '../db';
+import { handleInputErrors } from '../modules/handleInputErrors';
 
 const apiRouter = Router();
 
 // Artist
 apiRouter.get('/artist', () => {});
 apiRouter.get('/artist/:id', () => {});
-apiRouter.put('/artist/:id', body('name').isString(), (req: Request, res: Response) => {
-  const errors = validationResult(req);
 
-  if (!errors.isEmpty()) {
-    res.status(400);
-    res.json({ errors: errors.array() });
-  }
+apiRouter.put('/artist/:id', body('name').isString(), handleInputErrors, async (req: Request, res: Response) => {
+  const artist = await prisma.artist.update({
+    where: { id: req.params.id },
+    data: { name: req.body.name },
+  });
+
+  res.json({ message: 'success' });
 });
-apiRouter.post('/artist', () => {});
+
+apiRouter.post('/artist', body('name').isString(), handleInputErrors, async (req: Request, res: Response) => {
+  console.log(res.locals);
+  const artist = await prisma.artist.create({
+    data: {
+      name: req.body.name,
+      userId: res.locals.userId,
+    },
+  });
+
+  res.json({ message: 'success' });
+});
+
 apiRouter.delete('/artist/:id', () => {});
 
 // Albums
-apiRouter.get('/al;bum', () => {});
-apiRouter.get('/al;bum/:id', () => {});
-apiRouter.put('/al;bum/:id', () => {});
-apiRouter.post('/al;bum', () => {});
-apiRouter.delete('/al;bum/:id', () => {});
+apiRouter.get('/album', () => {});
+apiRouter.get('/album/:id', () => {});
+apiRouter.put('/album/:id', () => {});
+apiRouter.post('/album', () => {});
+apiRouter.delete('/album/:id', () => {});
 
 // Songs
 apiRouter.get('/song', () => {});

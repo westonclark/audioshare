@@ -28,6 +28,7 @@ export const checkJWT = (req: Request, res: Response, next: NextFunction) => {
 
   try {
     res.locals.userId = jwt.verify(bearer, process.env.JWT_SECRET as Secret);
+    console.log(res.locals.userId);
     next();
   } catch (error) {
     console.error(error);

@@ -11,7 +11,7 @@ export const createNewUser = async (req: Request, res: Response) => {
     },
   });
 
-  req.cookies.bearer = createJWT(user.id);
+  res.cookie('bearer', createJWT(user.id));
   res.json({ message: 'success' });
 };
 
@@ -29,6 +29,6 @@ export const signIn = async (req: Request, res: Response) => {
     res.json({ message: 'Incorect Password' });
   }
 
-  req.cookies.bearer = createJWT(user!.id);
+  res.cookie('bearer', createJWT(user!.id));
   res.json({ message: 'success' });
 };
