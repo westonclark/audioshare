@@ -28,12 +28,11 @@ export const checkJWT = (req: Request, res: Response, next: NextFunction) => {
 
   try {
     res.locals.userId = jwt.verify(bearer, process.env.JWT_SECRET as Secret);
-    console.log(res.locals.userId);
     next();
   } catch (error) {
     console.error(error);
     res.status(401);
-    res.json({ message: 'Invalid token' });
+    res.json({ message: 'Invalid Token' });
     return;
   }
 };
