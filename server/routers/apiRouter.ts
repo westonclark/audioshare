@@ -2,16 +2,16 @@ import { Router, Request, Response } from 'express';
 import { body, param } from 'express-validator';
 import { handleInputErrors } from '../modules/handleInputErrors';
 import { createArtist, deleteArtist, getArtists, getOneArtist, updateArtistName } from '../controllers/artist';
-import { getAlbums, getOneAlbum } from '../controllers/album';
+import { createAlbum, deleteAlbum, getAlbums, getOneAlbum, updateAlbumName } from '../controllers/album';
 
 const apiRouter = Router();
 
 // Artist
 apiRouter.get('/artist', getArtists);
 
-apiRouter.post('/artist', body('name').exists().isString(), handleInputErrors, createArtist);
-
 apiRouter.get('/artist/:id', param('id').exists().isString(), handleInputErrors, getOneArtist);
+
+apiRouter.post('/artist', body('name').exists().isString(), handleInputErrors, createArtist);
 
 apiRouter.put('/artist/:id', body('name').exists().isString(), param('id').exists().isString(), handleInputErrors, updateArtistName);
 
@@ -20,16 +20,16 @@ apiRouter.delete('/artist/:id', param('id').exists().isString(), deleteArtist);
 // Album
 apiRouter.get('/album', body('artistId').exists().isString(), handleInputErrors, getAlbums);
 
-apiRouter.get('/album/:id', body('id').exists().isString(), handleInputErrors, getOneAlbum);
+apiRouter.get('/album/:id', param('id').exists().isString(), handleInputErrors, getOneAlbum);
 
-apiRouter.put('/album/:id', (req: Request, res: Response) => {});
+apiRouter.post('/album', body('name').exists().isString(), body('artistId').exists().isString(), handleInputErrors, createAlbum);
 
-apiRouter.post('/album', (req: Request, res: Response) => {});
+apiRouter.put('/album/:id', param('id').exists().isString(), body('name').exists().isString(), handleInputErrors, updateAlbumName);
 
-apiRouter.delete('/album/:id', (req: Request, res: Response) => {});
+apiRouter.delete('/album/:id', param('id').exists().isString(), handleInputErrors, deleteAlbum);
 
 // Song
-apiRouter.get('/song', (req: Request, res: Response) => {});
+apiRouter.get('/song');
 apiRouter.get('/song/:id', (req: Request, res: Response) => {});
 apiRouter.put('/song/:id', (req: Request, res: Response) => {});
 apiRouter.post('/song', (req: Request, res: Response) => {});

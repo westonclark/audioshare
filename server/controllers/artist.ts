@@ -17,48 +17,64 @@ export const getArtists = async (req: Request, res: Response, next: NextFunction
   }
 };
 
-export const getOneArtist = async (req: Request, res: Response) => {
-  const artist = await prisma.artist.findUnique({
-    where: {
-      id: req.params.id,
-    },
-    include: {
-      albums: true,
-    },
-  });
-  res.json({ data: artist });
+export const getOneArtist = async (req: Request, res: Response, next: NextFunction) => {
+  try {
+    const artist = await prisma.artist.findUnique({
+      where: {
+        id: req.params.id,
+      },
+      include: {
+        albums: true,
+      },
+    });
+    res.json({ data: artist });
+  } catch (error) {
+    next(error);
+  }
 };
 
-export const createArtist = async (req: Request, res: Response) => {
-  const artist = await prisma.artist.create({
-    data: {
-      name: req.body.name,
-      userId: res.locals.userId,
-    },
-  });
+export const createArtist = async (req: Request, res: Response, next: NextFunction) => {
+  try {
+    const artist = await prisma.artist.create({
+      data: {
+        name: req.body.name,
+        userId: res.locals.userId,
+      },
+    });
 
-  res.json({ data: artist });
+    res.json({ data: artist });
+  } catch (error) {
+    next(error);
+  }
 };
 
-export const updateArtistName = async (req: Request, res: Response) => {
-  const artist = await prisma.artist.update({
-    where: {
-      id: req.params.id,
-      userId: res.locals.userId,
-    },
-    data: { name: req.body.name },
-  });
+export const updateArtistName = async (req: Request, res: Response, next: NextFunction) => {
+  try {
+    const artist = await prisma.artist.update({
+      where: {
+        id: req.params.id,
+        userId: res.locals.userId,
+      },
+      data: { name: req.body.name },
+    });
 
-  res.json({ data: artist });
+    res.json({ data: artist });
+  } catch (error) {
+    next(error);
+  }
 };
 
-export const deleteArtist = async (req: Request, res: Response) => {
-  await prisma.artist.delete({
-    where: {
-      id: req.params.id,
-      userId: res.locals.userId,
-    },
-  });
+export const deleteArtist = async (req: Request, res: Response, next: NextFunction) => {
+  try {
+    await prisma.artist.delete({
+      where: {
+        id: req.params.id,
+        userId: res.locals.userId,
+      },
+    });
 
-  res.json({ message: 'success' });
+    res.json({ message: 'success' });
+  } catch (error) {
+    next(error);
+  }
 };
