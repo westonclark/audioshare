@@ -29,12 +29,9 @@ app.post('/signin', signIn);
 
 // Global Error Handling
 
-
-
 app.use((err: ErrorRequestHandler, req: Request, res: Response, next: NextFunction) => {
   console.log(err);
   res.json({ message: 'oops something went wrong' });
 });
-
 
 export default app;
