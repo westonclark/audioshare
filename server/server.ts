@@ -1,4 +1,4 @@
-import express, { Express, Request, Response, NextFunction, ErrorRequestHandler, Router } from 'express';
+import express, { Express, Request, Response, NextFunction, ErrorRequestHandler } from 'express';
 import { checkJWT } from './modules/auth';
 import apiRouter from './routers/apiRouter';
 import cookieParser from 'cookie-parser';
@@ -28,9 +28,13 @@ app.post('/signup', createNewUser);
 app.post('/signin', signIn);
 
 // Global Error Handling
+
+
+
 app.use((err: ErrorRequestHandler, req: Request, res: Response, next: NextFunction) => {
   console.log(err);
-  res.json({ message: 'oops there was an error' });
+  res.json({ message: 'oops something went wrong' });
 });
+
 
 export default app;

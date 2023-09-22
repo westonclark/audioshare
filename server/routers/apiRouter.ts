@@ -1,103 +1,41 @@
 import { Router, Request, Response } from 'express';
 import { body, param } from 'express-validator';
-import prisma from '../db';
 import { handleInputErrors } from '../modules/handleInputErrors';
+import { createArtist, deleteArtist, getArtists, getOneArtist, updateArtistName } from '../controllers/artist';
+import { getAlbums, getOneAlbum } from '../controllers/album';
 
 const apiRouter = Router();
 
-//////////////////// Artist /////////////////////////////////////////////////////////////////////////////////////
-apiRouter.get('/artist', async (req: Request, res: Response) => {
-  const user = await prisma.user.findUnique({
-    where: {
-      id: res.locals.userId,
-    },
-    include: {
-      artists: true,
-    },
-  });
-  res.json({ data: user?.artists });
-});
+// Artist
+apiRouter.get('/artist', getArtists);
 
-apiRouter.get('/artist/:id', param('id').exists().isString(), handleInputErrors, async (req: Request, res: Response) => {
-  const artist = await prisma.artist.findUnique({
-    where: {
-      id: req.params.id,
-    },
-    include: {
-      albums: true,
-    },
-  });
-  res.json({ data: artist });
-});
+apiRouter.post('/artist', body('name').exists().isString(), handleInputErrors, createArtist);
 
-apiRouter.post('/artist', body('name').exists().isString(), handleInputErrors, async (req: Request, res: Response) => {
-  const artist = await prisma.artist.create({
-    data: {
-      name: req.body.name,
-      userId: res.locals.userId,
-    },
-  });
+apiRouter.get('/artist/:id', param('id').exists().isString(), handleInputErrors, getOneArtist);
 
-  res.json({ data: artist });
-});
+apiRouter.put('/artist/:id', body('name').exists().isString(), param('id').exists().isString(), handleInputErrors, updateArtistName);
 
-apiRouter.put('/artist/:id', body('name').exists().isString(), param('id').exists().isString(), handleInputErrors, async (req: Request, res: Response) => {
-  const artist = await prisma.artist.update({
-    where: {
-      id: req.params.id,
-      userId: res.locals.userId,
-    },
-    data: { name: req.body.name },
-  });
+apiRouter.delete('/artist/:id', param('id').exists().isString(), deleteArtist);
 
-  res.json({ data: artist });
-});
+// Album
+apiRouter.get('/album', body('artistId').exists().isString(), handleInputErrors, getAlbums);
 
-apiRouter.delete('/artist/:id', param('id').exists().isString(), async (req: Request, res: Response) => {
-  await prisma.artist.delete({
-    where: {
-      id: req.params.id,
-      userId: res.locals.userId,
-    },
-  });
-
-  res.json({ message: 'success' });
-});
-
-//////////////////// Albums /////////////////////////////////////////////////////////////////////////////////////
-apiRouter.get('/album', body('artistId').exists().isString(), handleInputErrors, async (req: Request, res: Response) => {
-  const albums = await prisma.album.findMany({
-    where: {
-      artistId: req.body.artistId,
-    },
-  });
-  res.json({ data: albums });
-});
-
-apiRouter.get('/album/:id', body('id').exists().isString(), handleInputErrors, async (req: Request, res: Response) => {
-  const album = await prisma.album.findMany({
-    where: {
-      id: req.body.id,
-    },
-    include: {
-      songs: true,
-    },
-  });
-  res.json({ data: album });
-});
+apiRouter.get('/album/:id', body('id').exists().isString(), handleInputErrors, getOneAlbum);
 
 apiRouter.put('/album/:id', (req: Request, res: Response) => {});
+
 apiRouter.post('/album', (req: Request, res: Response) => {});
+
 apiRouter.delete('/album/:id', (req: Request, res: Response) => {});
 
-//////////////////// Songs /////////////////////////////////////////////////////////////////////////////////////
+// Song
 apiRouter.get('/song', (req: Request, res: Response) => {});
 apiRouter.get('/song/:id', (req: Request, res: Response) => {});
 apiRouter.put('/song/:id', (req: Request, res: Response) => {});
 apiRouter.post('/song', (req: Request, res: Response) => {});
 apiRouter.delete('/song/:id', (req: Request, res: Response) => {});
 
-//////////////////// Notes /////////////////////////////////////////////////////////////////////////////////////
+// Note
 apiRouter.get('/note', (req: Request, res: Response) => {});
 apiRouter.get('/note/:id', (req: Request, res: Response) => {});
 apiRouter.put('/note/:id', (req: Request, res: Response) => {});
