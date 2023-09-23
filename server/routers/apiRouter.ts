@@ -1,4 +1,4 @@
-import { Router, Request, Response } from 'express';
+import { Router, Request, Response, ErrorRequestHandler, NextFunction } from 'express';
 import { body, param } from 'express-validator';
 import { handleInputErrors } from '../modules/handleInputErrors';
 import { createArtist, deleteArtist, getArtists, getOneArtist, updateArtistName } from '../controllers/artist';
@@ -35,5 +35,11 @@ apiRouter.get('/note/:id', param('id').exists().isString(), handleInputErrors, g
 apiRouter.post('/note', body('value').exists().isString(), body('songId').exists().isString(), handleInputErrors, createNote);
 apiRouter.put('/note/:id', param('id').exists().isString(), body('checked').exists().isBoolean(), handleInputErrors, updateNoteChecked);
 apiRouter.delete('/note/:id', param('id').exists().isString(), handleInputErrors, deleteNote);
+
+// Error Handler
+apiRouter.use((err: ErrorRequestHandler, req: Request, res: Response, next: NextFunction) => {
+  console.log(err);
+  res.json({ message: 'oops something went wrong' });
+});
 
 export default apiRouter;
