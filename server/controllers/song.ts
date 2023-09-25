@@ -39,13 +39,13 @@ export const createSong = async (req: Request, res: Response, next: NextFunction
       data: {
         name: req.body.name,
         albumId: req.body.albumId,
-        // url: res.locals.url,
-        url: 'songurl.com',
         version: req.body.version || 1,
+        url: '',
       },
     });
 
-    res.json({ data: song });
+    res.locals.song = song;
+    next();
   } catch (error) {
     next(error);
   }
@@ -61,6 +61,21 @@ export const updateSongName = async (req: Request, res: Response, next: NextFunc
     });
 
     res.json({ data: song });
+  } catch (error) {
+    next(error);
+  }
+};
+
+export const updateSongUrl = async (req: Request, res: Response, next: NextFunction) => {
+  try {
+    const song = await prisma.song.update({
+      where: {
+        id: res.locals.song.id,
+      },
+      data: { url: res.locals.UploadUrl.split('?')[0] },
+    });
+
+    res.json({ data: { song }, url: res.locals.UploadUrl });
   } catch (error) {
     next(error);
   }

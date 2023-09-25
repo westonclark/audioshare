@@ -3,8 +3,9 @@ import { body, param } from 'express-validator';
 import { handleInputErrors } from '../modules/handleInputErrors';
 import { createArtist, deleteArtist, getArtists, getOneArtist, updateArtistName } from '../controllers/artist';
 import { createAlbum, deleteAlbum, getAlbums, getOneAlbum, updateAlbumName } from '../controllers/album';
-import { createSong, deleteSong, getOneSong, getSongs, updateSongName } from '../controllers/song';
+import { createSong, deleteSong, getOneSong, getSongs, updateSongName, updateSongUrl } from '../controllers/song';
 import { createNote, deleteNote, getNotes, getOneNote, updateNoteChecked } from '../controllers/note';
+import { generateUrl } from '../modules/generatePresignedUrl';
 
 const apiRouter = Router();
 
@@ -25,7 +26,7 @@ apiRouter.delete('/album/:id', param('id').exists().isString(), handleInputError
 // Song
 apiRouter.get('/song', body('albumId').exists().isString(), handleInputErrors, getSongs);
 apiRouter.get('/song/:id', param('id').exists().isString(), handleInputErrors, getOneSong);
-apiRouter.post('/song', body('name').exists().isString(), body('albumId').exists().isString(), handleInputErrors, createSong);
+apiRouter.post('/song', body('name').exists().isString(), body('albumId').exists().isString(), handleInputErrors, createSong, generateUrl, updateSongUrl);
 apiRouter.put('/song/:id', body('name').exists().isString(), param('id').exists().isString(), handleInputErrors, updateSongName);
 apiRouter.delete('/song/:id', param('id').exists().isString(), handleInputErrors, deleteSong);
 
