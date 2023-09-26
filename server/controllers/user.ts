@@ -1,6 +1,6 @@
 import { NextFunction, Request, Response } from 'express';
 import prisma from '../db';
-import { createJWT, checkJWT, hashPassword, comparePasswords } from '../modules/auth';
+import { createJWT, hashPassword, comparePasswords } from '../modules/auth';
 
 export const createNewUser = async (req: Request, res: Response, next: NextFunction) => {
   try {
