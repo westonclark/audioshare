@@ -1,16 +1,13 @@
 import React from 'react';
 import { useState } from 'react';
+import App from '../App';
 import { Outlet } from 'react-router-dom';
 
-function App() {
-  const [count, setCount] = useState(0);
-
+export default function Home() {
   return (
     <>
-      <h1>Page</h1>
-      <Outlet />
+      <header>header</header>
+      <App />
     </>
   );
 }
-
-export default App;
