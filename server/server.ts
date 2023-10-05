@@ -1,9 +1,9 @@
 import express, { Express, Request, Response, NextFunction, ErrorRequestHandler } from 'express';
 import { checkJWT } from './modules/auth';
 import apiRouter from './routers/apiRouter';
+import authRouter from './routers/authRouter';
 import cookieParser from 'cookie-parser';
 import cors from 'cors';
-
 import { createNewUser, signIn } from './controllers/user';
 
 // Create server
@@ -20,12 +20,11 @@ app.get('/', (req: Request, res: Response) => {
   res.json('hello from server');
 });
 
+// Auth Router
+app.use('/auth', authRouter);
+
 // API Router
 app.use('/api', checkJWT, apiRouter);
-
-// Signup and Login
-app.post('/signup', createNewUser);
-app.post('/signin', signIn);
 
 // Global Error Handling
 
